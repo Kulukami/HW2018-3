@@ -24,10 +24,10 @@ class f2d():
     def __init__(self,filepath):
 
         self.pool=[] # sampleI shape like datas
-        self.sampleI=[0, #timeStamp
+        self.sampleI=[0,
                       0,0,0,0,0, # Counts of flavor0 ~ flavor15
                       0,0,0,0,0,
-                      0,0,0,0,0]
+                      0,0,0,0]
         self.legi={"flavor1":1,"flavor2":2,"flavor3":3,"flavor4":4,"flavor5":5,"flavor6":6,"flavor7":7,
                    "flavor8":8,"flavor9":9,"flavor10":10,"flavor11":11,"flavor12":12,"flavor13":13,
                    "flavor14":14,"flavor15":15}
@@ -38,20 +38,10 @@ class f2d():
 
         for line in lines:
             self.mkpool(line)
-        for i in range(len(self.pool)):
-            self.pool[i][0]=i+1
 
     def time2read(self,dt):
         dt = dt.split('\t')[0]
         return time.mktime(time.strptime(dt,'%Y-%m-%d %H:%M:%S'))
-
-    def date2read(self,dt):
-        dt = dt.split()[0]
-        return time.mktime(time.strptime(dt,'%Y-%m-%d')) # %H:%M:%S'))
-
-    def hour2read(self,dt):
-        dt = dt.split(":")[0]
-        return time.mktime(time.strptime(dt,'%Y-%m-%d %H')) #:%M:%S'))
 
     def timeMh(self,d1,d2):
         #return int((d1-d2)/604800) #a week
@@ -66,7 +56,7 @@ class f2d():
             #pint hourTM
             while hourTM - len(self.pool) >= 0:
                 sample = self.sampleI[:]
-                self.pool.append(sample)    
+                self.pool.append(sample)
             self.pool[hourTM][self.legi[flavor]]+=1
 
     def appendDat(self,filepath):
@@ -76,8 +66,6 @@ class f2d():
         for line in lines:
             self.mkpool(line)
 
-        for i in range(len(self.pool)):
-            self.pool[i][0]=i+1
 
 if __name__ == "__main__":
     trainSet=f2d("example/TrainData_2015.1.1_2015.2.19.txt")
